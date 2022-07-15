@@ -6,4 +6,6 @@ public interface CameraAuthenticationService
 {
 
     ResponseResult authentication(String authCode) ;
+
+    ResponseResult deauthenticate(String authCode);
 }

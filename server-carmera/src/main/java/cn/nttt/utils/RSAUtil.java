@@ -1,6 +1,7 @@
 package cn.nttt.utils;
 
 
+import cn.hutool.core.lang.Snowflake;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
@@ -11,10 +12,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class RSAUtil
 {
+    Snowflake snowflake = IdUtil.getSnowflake(1, 1);
+    private static final String AUTHCODE = "camera";
 
-    private static String AUTHCODE = "camera";
-
-    private static String PRIVATE_KEY = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBANcQJPrwTapZOrGX\n" +
+    private static final String PRIVATE_KEY = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBANcQJPrwTapZOrGX\n" +
             "Gt3AhuNEnLK5NRoKnvlO95KSUCtlyqCggBfYSV8ZUNafIt5wMZWVdJowrL903M4F\n" +
             "m9XIoDVXtoJURxT3FanF4PMyZdj8tE/IjQaXyNO2Cu9m8hcM2leHHcSZGO4MkIhW\n" +
             "9oBhXDuzAnPWQu45OTC3W9Y16RMLAgMBAAECgYBBvhuv4jm7s18v3qNF2o7hdp34\n" +
@@ -28,7 +29,7 @@ public class RSAUtil
             "KVVhiGqZ6H3HJU6j4iFS22kyeezcW4YuKpzjxc5RQki7EEQ0UdlBAkBAu35pjnXq\n" +
             "DLIc3BWhdXBmekHe86C3U/JF2ZDoXb9oDsvERDUvSYH4nQ+semG4tOrD2gOe7qcL\n" +
             "fPLXcH3kqQDg";
-    private static String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDXECT68E2qWTqxlxrdwIbjRJyy\n" +
+    private static final String PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDXECT68E2qWTqxlxrdwIbjRJyy\n" +
             "uTUaCp75TveSklArZcqgoIAX2ElfGVDWnyLecDGVlXSaMKy/dNzOBZvVyKA1V7aC\n" +
             "VEcU9xWpxeDzMmXY/LRPyI0Gl8jTtgrvZvIXDNpXhx3EmRjuDJCIVvaAYVw7swJz\n" +
             "1kLuOTkwt1vWNekTCwIDAQAB";
@@ -43,24 +44,19 @@ public class RSAUtil
      */
     public String Decrypt(String authCode) 
     {
-
-        String decrypt = rsa.decryptStr(authCode, KeyType.PrivateKey);
-        return decrypt;
+        return rsa.decryptStr(authCode, KeyType.PrivateKey);
     }
     public String GetUUID(String authCode)
     {
         if (Decrypt(authCode).equals(AUTHCODE))
         {
-            return IdUtil.simpleUUID();
+            return snowflake.nextIdStr();
         }
         throw  new SystemException(AppHttpCodeEnum.AUTHCODE_ERROR);
     }
 
     public String Eecrypt(String str)
     {
-        String authCode = rsa.encryptBase64(str, KeyType.PublicKey);
-        return authCode;
+        return rsa.encryptBase64(str, KeyType.PublicKey);
     }
-
-
 }
