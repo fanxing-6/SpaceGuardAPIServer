@@ -1,13 +1,18 @@
 package cn.nttt.utils;
 
 
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.crypto.asymmetric.KeyType;
 import cn.hutool.crypto.asymmetric.RSA;
+import cn.nttt.enums.AppHttpCodeEnum;
+import cn.nttt.exception.SystemException;
 import org.springframework.stereotype.Component;
 
 @Component
 public class RSAUtil
 {
+
+    private static String AUTHCODE = "camera";
 
     private static String PRIVATE_KEY = "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBANcQJPrwTapZOrGX\n" +
             "Gt3AhuNEnLK5NRoKnvlO95KSUCtlyqCggBfYSV8ZUNafIt5wMZWVdJowrL903M4F\n" +
@@ -41,6 +46,14 @@ public class RSAUtil
 
         String decrypt = rsa.decryptStr(authCode, KeyType.PrivateKey);
         return decrypt;
+    }
+    public String GetUUID(String authCode)
+    {
+        if (Decrypt(authCode).equals(AUTHCODE))
+        {
+            return IdUtil.simpleUUID();
+        }
+        throw  new SystemException(AppHttpCodeEnum.AUTHCODE_ERROR);
     }
 
     public String Eecrypt(String str)

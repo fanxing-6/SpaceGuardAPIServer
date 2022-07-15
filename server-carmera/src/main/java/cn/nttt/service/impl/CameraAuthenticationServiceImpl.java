@@ -16,6 +16,6 @@ public class CameraAuthenticationServiceImpl implements CameraAuthenticationServ
     @Override
     public ResponseResult authentication(String authCode)
     {
-        return ResponseResult.okResult(rsaUtil.Decrypt(authCode));
+        return ResponseResult.okResult(rsaUtil.GetUUID(authCode));
     }
 }

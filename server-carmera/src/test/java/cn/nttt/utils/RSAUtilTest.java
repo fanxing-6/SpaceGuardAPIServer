@@ -13,7 +13,7 @@ public class RSAUtilTest
     @Test
     public  void test()
     {
-        String authCode =rsaUtil.Eecrypt("123456");
+        String authCode =rsaUtil.Eecrypt("camer");
         System.out.println("****************************************\n");
         System.out.println(authCode);
         System.out.println("****************************************\n");
