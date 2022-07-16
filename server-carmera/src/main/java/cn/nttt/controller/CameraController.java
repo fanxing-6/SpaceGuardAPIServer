@@ -1,5 +1,6 @@
 package cn.nttt.controller;
 
+import cn.nttt.annotation.SystemLog;
 import cn.nttt.domain.ResponseResult;
 import cn.nttt.enums.AppHttpCodeEnum;
 import cn.nttt.exception.SystemException;
@@ -13,6 +14,7 @@ public class CameraController
     @Autowired
     private CameraAuthenticationService cameraAuthenticationService;
 
+    @SystemLog(businessName = "摄像头获取推流Token")
     @GetMapping("/getToken")
     public ResponseResult getToken( String authCode)
     {
@@ -21,6 +23,7 @@ public class CameraController
 
         return cameraAuthenticationService.authentication(authCode);
     }
+    @SystemLog(businessName = "摄像头删除推流Token")
     @GetMapping("/delToken")
     public  ResponseResult delToken(String authCode)
     {
